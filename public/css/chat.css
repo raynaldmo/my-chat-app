@@ -1,0 +1,143 @@
+/*
+ * chat.css
+*/
+
+/* for shell.js */
+.chat-image {
+    height: 6em;
+    background-color: mediumseagreen;
+    text-align: center;
+    font-size: 3em;
+}
+
+.chat-shell-popup-btn {
+    width: 40%;
+    margin: 5% auto;
+}
+
+.chat-shell-popup-msg {
+    font-size: 90%;
+    color: green;
+}
+
+.chat-shell-popup-msg a {
+    margin-left: 40%;
+}
+
+.chat-shell-popup-msg a:link {
+    color: green;
+}
+
+.chat-shell-popup-msg a:visited {
+    color: green;
+}
+
+.chat-shell-popup-msg-fail {
+    font-size: 90%;
+    color: red;
+}
+
+.chat-shell-popup-msg-fail a {
+    margin-left: 40%;
+}
+
+.chat-shell-popup-msg-fail a:link {
+    color: red;
+}
+.chat-shell-popup-msg-fail a:visited {
+    color: red;
+}
+
+/* for chat-main.js */
+.chat-main-title {
+
+}
+.chat-main-msg {
+    height: 14em;
+}
+
+.chat-main-msg-log {
+    height: 14em;
+    overflow-y: scroll;
+    /* border: 1px solid orangered; */
+    /* border-radius: 10px; */
+}
+
+.chat-main-msg-in {
+
+}
+
+.chat-list-name {
+
+}
+
+.chat-x-select {
+
+}
+
+.chat-list-note {
+
+}
+
+/* style online user panel */
+#chat-user-panel {
+
+}
+
+#chat-user-panel p {
+    font-style: italic;
+    color: steelblue;
+    font-weight: bold;
+}
+
+/*
+.ui-panel-inner {
+    border: 1px solid grey;
+    border-radius: 10px;
+    width: 70%;
+    margin: 5% auto;
+    background-color: lightblue;
+}
+*/
+
+.chat-x-select {
+    color: darkgreen;
+}
+
+.chat-list-name {
+
+}
+
+.chat-list-note {
+
+}
+
+/* style chat message log */
+.chat-msg-log-alert {
+    color: darkgreen;
+    font-style: italic;
+
+}
+
+.chat-main-text {
+    width: 70%;
+}
+
+.chat-main-send-btn {
+    width: 30%;
+    border: 1px solid grey;
+    border-radius: 10px
+}
+
+.chat-main-input {
+
+}
+
+.chat-msg-send-btn {
+    margin-left: 20%; margin-top: 33%; color:steelblue;
+}
+
+.chat-msg-send-btn-highlight {
+    font-style: italic;
+    color: darkgreen;
+}

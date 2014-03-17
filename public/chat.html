@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>myChat</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+  <link rel="stylesheet" href="css/chat.css">
+
+  <!-- third-party javascript -->
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
+  <script src="socket.io/socket.io.js"            ></script>
+  <script src="js/jq/taffydb-2.6.2.js"            ></script>
+  <script src="js/jq/jquery.event.gevent-0.1.9.js"></script>
+
+  <!-- our javascript -->
+  <script src="js/chat.js"  ></script>
+  <script src="js/util.js"  ></script>
+  <script src="js/data.js"  ></script>
+  <script src="js/fake.js"  ></script>
+  <script src="js/model.js" ></script>
+  <script src="js/util_b.js"></script>
+  <script src="js/shell.js" ></script>
+  <script src="js/chat-main.js" ></script>
+</head>
+
+<body>
+
+<!-- home page -->
+<div data-role="page" id="home-page">
+
+  <div data-role="content">
+    <div class="chat-image">
+      myChat
+    </div>
+    <a href="#sign-in" data-role="button" data-inline="true"
+       data-theme="b">Sign in</a>
+    <a href="#sign-up" data-role="button"
+       data-inline="true">Sign up</a>
+  </div>
+
+</div>
+
+<!-- sign-in page -->
+<div data-role="page" id="sign-in">
+  <div data-role="content">
+
+    <a href="#home-page" data-role="button"
+       data-inline="true" data-theme="b">Cancel</a>
+
+    <form id="sign-in-form" data-ajax="false">
+      <input type="text" id="in-user" autocapitalize="off" autocorret="off"
+             placeholder="User Name" value="mickey">
+      <input type="password" id="in-passwd" placeholder="Password"
+             value="test">
+      <input type="submit" value="Sign in" data-theme="b">
+      <input type="reset"
+             data-role="none" style="display: none;">
+    </form>
+
+  </div>
+
+</div>
+
+<!-- sign-up page -->
+<div data-role="page" id="sign-up">
+  <div data-role="content" id="sign-up-content">
+
+    <a href="#home-page" data-role="button"
+       data-inline="true" data-theme="b">Cancel</a>
+
+    <form data-ajax="false">
+      <input type="text" id="up-user" autocapitalize="off" autocorret="off"
+             placeholder="User Name">
+      <input type="email" id="up-email"
+             placeholder="Email Address">
+      <input type="password" id="up-passwd" placeholder="Password"
+             value>
+      <input type="password" id="up-passwd-confirm"
+             placeholder="Confirm Password">
+      <input type="submit" value="Sign up" data-theme="b">
+      <input type="reset"
+             data-role="none" style="display: none;">
+    </form>
+
+  </div>
+
+</div>
+
+<!-- sign-out page -->
+<!-- displayed as dialog -->
+<div data-role="dialog" id="sign-out">
+  <div data-role="header" data-theme="d">
+    <h1>Cancel</h1>
+  </div>
+  <div data-role="content" data-theme="c">
+    <div>Are you sure you want to Sign out?</div>
+    <button data-theme="b">Yes</button>
+  </div>
+</div>
+
+
+
+<!-- chat page -->
+<div data-role="page" id="chat-page">
+
+  <!-- create panel for showing online users -->
+  <div data-role="panel" data-theme="b" id="chat-user-panel">
+
+    <a href="#chat-page" data-role="button" data-mini="false"
+       data-icon="delete" data-iconpos="notext" data-theme="b"
+       data-rel="close" data-position="left" data-display="reveal">Close</a>
+
+    <p>Tap user to chat with</p>
+    <div class="chat-users">
+      <!-- fill with list of online users -->
+    </div>
+  </div>
+
+  <div data-role="header" data-theme="b">
+    <h1 class="chat-main-title">myChat</h1>
+
+    <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal"
+         data-mini="false">
+    <!-- button for online users -->
+    <a href="#chat-user-panel" id="online-btn" data-role="button"
+       data-icon="star" data-iconpos="notext data"
+       data-inline="false">Online</a>
+
+    <!-- button for settings -->
+    <a href="#settings-page" id="settings-btn" data-role="button"
+    data-icon="gear" data-iconpos="notext"
+    data-inline="true">Settings</a>
+    </div>
+
+    <!-- sign-in/sign-out button -->
+    <a href="#sign-in" id="in-out-btn" data-role="button" class="ui-btn-right"
+       data-theme="b" data-inline="false">Sign in</a>
+  </div>
+
+  <div data-role="content">
+    <div class="chat-main-msg-log"></div>
+  </div>
+
+
+  <div id="footer" data-role="footer"
+   class="ui-bar"
+   data-theme="c">
+
+    <div class="ui-grid-a chat-main-input" style="width: 100%;">
+      <div class="ui-block-a" style="width: 82%">
+        <input type="text" data-mini="false">
+      </div>
+      <div class="ui-block-b" style="width: 18%;">
+        <div class="chat-msg-send-btn">Send</div>
+      </div>
+    </div>
+</div>
+
+</div> <!-- chat-page -->
+
+<!-- settings page -->
+<div data-role="page" id="settings-page">
+
+  <div data-role="header" data-theme="b">
+    <h1>Settings</h1>
+
+    <a href="#chat-page" data-role="button" data-icon="back"
+       data-iconpos="notext" data-theme="b" data-inline="true"></a>
+  </div>
+
+  <div data-role="content">
+    <ul data-role="listview" data-inset="true">
+      <li><a href="#about-page">About</a></li>
+<!--      <li><a href="#">Account</a></li> -->
+    </ul>
+  </div>
+</div>
+
+<!-- about page -->
+<div data-role="page" id="about-page">
+
+  <div data-role="header" data-theme="b">
+    <h1>About</h1>
+    <a href="#settings-page" data-role="button" data-icon="back"
+       data-iconpos="notext" data-theme="b" data-inline="true"></a>
+  </div>
+
+  <div data-role="content">
+    <div class="chat-image">
+      myChat
+      <p style="font-size:50%; text-align: center">v0.1<p>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+
+   $(function () {
+      mdhChat.initModule({}); // no container
+   });
+
+</script>
+
+</body>
+</html>

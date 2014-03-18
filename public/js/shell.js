@@ -20,7 +20,7 @@ mdhChat.shell = (function () {
     configMap = {
       sign_up_confirm_html: [
         '<div id="sign-up-popup" data-role="popup" data-dimissable="no" class="ui-content">',
-        '<div class="chat-shell-popup-msg"',
+        '<div class="chat-shell-popup-msg">',
         '<p>Successfully signed up as:<br><br> USER USERNAME<br>EMAIL EMAIL-ADDR</p>',
         '<p>Thanks for signing up to myChat!</p>',
         '<a href="#sign-in" data-role="none">Dismiss</a>',
@@ -30,8 +30,32 @@ mdhChat.shell = (function () {
 
       sign_up_fail_html: [
         '<div id="sign-up-popup-fail" data-role="popup" data-dimissable="yes" class="ui-content">',
-        '<div class="chat-shell-popup-msg-fail"',
+        '<div class="chat-shell-popup-msg-fail">',
         '<p>User name ** USERNAME ** already in use.<br> Please sign up with a different user name.</p>',
+        '<a href="#sign-up" data-role="none">Dismiss</a>',
+        '</div>',
+        '</div>'
+      ],
+
+      sign_up_invalid_html: [
+        '<div id="sign-up-invalid" data-role="popup" data-dimissable="yes" class="ui-content">',
+        '<div class="chat-shell-popup-msg-fail">',
+        '<p>Sign up failed.</p>',
+        '<p>User name and password must be at least 4 characters long.',
+        '<br>Email address must be of the form: user_id@domain.com',
+        '<br>(example: bigpapa@google.com)</p>',
+        '<p>Please try again.</p>',
+        '<a href="#sign-up" data-role="none">Dismiss</a>',
+        '</div>',
+        '</div>'
+      ],
+
+      sign_up_passwd_err_html: [
+        '<div id="sign-up-passwd-err" data-role="popup" data-dimissable="yes" class="ui-content">',
+        '<div class="chat-shell-popup-msg-fail">',
+        '<p>Sign up failed.</p>',
+        '<p>Passwords entered do not match.</p>',
+        '<p>Please try again.</p>',
         '<a href="#sign-up" data-role="none">Dismiss</a>',
         '</div>',
         '</div>'
@@ -39,7 +63,7 @@ mdhChat.shell = (function () {
 
       sign_in_fail_html: [
         '<div id="sign-in-popup-fail" data-role="popup" data-dimissable="yes" class="ui-content">',
-        '<div class="chat-shell-popup-msg-fail"',
+        '<div class="chat-shell-popup-msg-fail">',
         '<p>Sign in failed.<br> Please check user name and password are correct and try again.</p>',
         '<a href="#sign-in" data-role="none">Dismiss</a>',
         '</div>',
@@ -51,7 +75,8 @@ mdhChat.shell = (function () {
     setJqueryMap, configModule, initModule,
 
     onSignIn, onSignInFail, onSignUp, onSignOut,
-    onSignUpFail,  onFormSubmit, signOutClick;
+    onSignUpFail,  onFormSubmit, signOutClick,
+    signUpInvalid, signUpPasswdErr;
 
   //----------------- END MODULE SCOPE VARIABLES ---------------
 
@@ -214,10 +239,51 @@ mdhChat.shell = (function () {
     $popup.popup('open');
   };
 
+  // bad sign-up input
+  // bring up popup alerting user to this
+  signUpInvalid = function(event, user_map) {
+    var page, $page, $popup;
+
+    page = configMap.sign_up_invalid_html.join('');
+    $page = $(page);
+
+    $page.appendTo($.mobile.pageContainer).trigger('create');
+
+    $popup = $('#sign-up-invalid');
+
+    $popup.popup().bind( { popupafterclose: function() {
+      console.log('remove ->', this);
+      $(this).remove();
+    }
+    });
+
+    $popup.popup('open');
+  };
+
+  // sign-up password mismatch
+  // bring up popup alerting user to this
+  signUpPasswdErr = function(event, user_map) {
+    var page, $page, $popup;
+
+    page = configMap.sign_up_passwd_err_html.join('');
+    $page = $(page);
+    $page.appendTo($.mobile.pageContainer).trigger('create');
+    $popup = $('#sign-up-passwd-err');
+
+    $popup.popup().bind( { popupafterclose: function() {
+      console.log('remove ->', this);
+      $(this).remove();
+    }
+    });
+
+    $popup.popup('open');
+  };
+
   // event handler for sign-in and sign-up form submission
   onFormSubmit = function(event) {
     var $this = $(this), user_map = {}, $name, $passwd, $passwd_confirm,
-      $email, $form;
+      $email, $form,
+      name, email, passwd, passwd_confirm;
 
     console.log(moduleName + 'onFormSubmit -> form: ' + this.id);
 
@@ -231,8 +297,17 @@ mdhChat.shell = (function () {
     if (this.id === 'sign-in-form') {
       $name = $form.find('#in-user');
       $passwd = $form.find('#in-passwd');
-      user_map.name = $name.val().trim();
-      user_map.passwd = $passwd.val();
+
+      name = $name.val().trim();
+      passwd = $passwd.val().trim();
+
+      // real basic check before sending to server to verify
+      if (name.length < 4 || passwd.length < 4) {
+          onSignInFail('chat-sign-in-fail', {name: name});
+        return false;
+      }
+      user_map.name = name;
+      user_map.passwd = passwd;
 
       mdhChat.model.people.sign_in(user_map);
 
@@ -242,10 +317,26 @@ mdhChat.shell = (function () {
       $passwd = $form.find('#up-passwd');
       $passwd_confirm = $form.find('#up-passwd-confirm');
 
-      user_map.name = $name.val().trim();
-      user_map.email = $email.val().trim();
-      user_map.passwd = $passwd.val();
-      user_map.passwd_confirm = $passwd_confirm.val();
+      name = $name.val().trim();
+      email = $email.val().trim();
+      passwd = $passwd.val().trim();
+      passwd_confirm = $passwd_confirm.val().trim();
+
+      // real basic check before sending to server to verify
+      if ( (name.length < 4) ||
+          (passwd.length < 4) || !mdhChat.util.validateEmail(email) ) {
+        signUpInvalid('', {name: name});
+        return false;
+      }
+
+      if (passwd !== passwd_confirm) {
+        signUpPasswdErr('', {name: name});
+        return false;
+      }
+
+      user_map.name = name;
+      user_map.email = email;
+      user_map.passwd = passwd;
 
       mdhChat.model.people.sign_up(user_map);
     }

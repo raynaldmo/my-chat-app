@@ -228,7 +228,7 @@ mdhChat.chat = (function () {
         += '<li class="chat-list-note">'
         + "Aw man, No one's online!"
         + '</li></ul>';
-      clearChat();
+      // clearChat();
     }
 
     var $ul = $(list_html);

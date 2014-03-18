@@ -19,7 +19,7 @@
 /*global $, mdhChat */
 
 mdhChat.util = (function () {
-  var makeError, setConfigMap;
+  var makeError, setConfigMap, validateEmail;
 
   // Begin Public constructor /makeError/
   // Purpose: a convenience wrapper to create an error object
@@ -72,12 +72,21 @@ mdhChat.util = (function () {
     }
   };
   // End Public method /setConfigMap/
-  // This doesn't work, get Illegal Invocation error.
 
-  // var log = debug ? console.log : function() {};
+  // Begin Public method /validateEmail/
+  // Purpose: Check if email address is valid
+  // Arguments:
+  //   * email    - email address to check
+  // Returns: true or false
+  //
+  validateEmail = function ( email) {
+    var re = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    return re.test(email);
+  };
 
   return {
-    makeError    : makeError,
-    setConfigMap : setConfigMap
+    makeError     : makeError,
+    setConfigMap  : setConfigMap,
+    validateEmail : validateEmail
   };
 }());

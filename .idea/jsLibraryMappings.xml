@@ -2,6 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$/app.js" libraries="{Node.js Globals}" />
+    <file url="file://$PROJECT_DIR$/lib/chat.js" libraries="{Node.js, Node.js Globals}" />
     <file url="file://$PROJECT_DIR$/public/chat.html" libraries="{jquery-1.9.1, jquery.mobile-1.3.2}" />
     <file url="file://$PROJECT_DIR$/public/js/chat-main.js" libraries="{jquery.mobile-1.3.2}" />
     <file url="file://$PROJECT_DIR$/public/js/shell.js" libraries="{jquery.mobile-1.3.2}" />

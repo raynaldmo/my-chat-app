@@ -53,9 +53,9 @@ mdhChat.shell = (function () {
       sign_up_passwd_err_html: [
         '<div id="sign-up-passwd-err" data-role="popup" data-dimissable="yes" class="ui-content">',
         '<div class="chat-shell-popup-msg-fail">',
-        '<p>Sign up failed.</p>',
-        '<p>Passwords entered do not match.</p>',
-        '<p>Please try again.</p>',
+        '<p>Sign up failed.<br>',
+        'Passwords entered do not match.<br>',
+        'Please try again.</p>',
         '<a href="#sign-up" data-role="none">Dismiss</a>',
         '</div>',
         '</div>'

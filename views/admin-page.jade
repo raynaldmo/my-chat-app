@@ -1,0 +1,15 @@
+extends layout
+
+block append content
+  div(class="container")
+    h2(class="admin-page-hdr") myChat Administration
+    div(class='table-responsive')
+      table(class="table table-striped user-table")
+        thead
+          tr
+            th User
+            th Email
+            th Online
+            th Last Sign In
+            th Delete
+        tbody

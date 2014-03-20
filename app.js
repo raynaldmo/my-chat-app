@@ -17,6 +17,7 @@ var
   express = require( 'express'      ),
   routes  = require( './lib/routes' ),
   path    = require( 'path'         ),
+  MongoStore = require('connect-mongo')(express),
 
   app     = express(),
   server  = http.createServer( app );
@@ -33,6 +34,17 @@ app.configure( function () {
     app.use(express.logger('dev'));
     app.use( express.bodyParser() );
     app.use( express.methodOverride() );
+    app.use(express.cookieParser('!SEEkret007#'));
+    app.use(express.session({
+    cookie: { maxAge: 15 * 60 * 1000},
+    store: new MongoStore({
+      db: 'mdh-chat-session',
+      host: '192.168.0.252'
+    }, function() {
+      console.log('Called session store!');
+    })
+  }));
+
     app.use( express.static( __dirname + '/public' ) );
     app.use( app.router );
 });

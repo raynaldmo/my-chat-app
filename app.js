@@ -36,7 +36,7 @@ app.configure( function () {
     app.use( express.methodOverride() );
     app.use(express.cookieParser('!SEEkret007#'));
     app.use(express.session({
-    cookie: { maxAge: 15 * 60 * 1000},
+    cookie: { maxAge: 60 * 60 * 1000},
     store: new MongoStore({
       db: 'mdh-chat-session',
       host: '192.168.0.252'

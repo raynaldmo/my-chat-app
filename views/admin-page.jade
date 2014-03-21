@@ -2,14 +2,24 @@ extends layout
 
 block append content
   div(class="container")
-    h2(class="admin-page-hdr") myChat Administration
+    h2(class="admin-page-hdr") myChat Admin Panel
+    span(class="messages")
+    hr
     div(class='table-responsive')
       table(class="table table-striped user-table")
         thead
           tr
             th User
             th Email
+            th Id
             th Online
+            th Signed Up
             th Last Sign In
             th Delete
         tbody
+    button(class="btn btn-primary submit-changes-btn") Submit Changes
+    form(class="form-signout" role="form" method="get", action="/logout")
+      button(class="btn btn-primary", type="submit") Logout
+
+block append scripts
+  script("src=./js/admin.js")

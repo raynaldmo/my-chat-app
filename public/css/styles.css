@@ -55,6 +55,39 @@ ul.errors {
 }
 
 /* admin page */
-.admin-page-hdr {
-    border-bottom: 1px solid grey;
+h2.admin-page-hdr {
+    display: inline-block;
+}
+
+span.messages {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-left: 3%;
+}
+
+/* table */
+.user-table {
+
+}
+
+td.user-table-checkbox {
+    text-align: center; /* center checkbox horizontally */
+    vertical-align: middle; /* center checkbox vertically */
+}
+
+hr {
+    height: 1px;
+    color: grey;
+    background-color: grey;
+    margin-top: -1%;
+}
+
+.form-signout {
+    display: inline-block;
+    margin-left: 1%;
+}
+
+.submit-changes-btn {
+    display: inline-block;
+
 }

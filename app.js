@@ -24,8 +24,11 @@ var
 // ------------- END MODULE SCOPE VARIABLES ---------------
 
 // ------------- BEGIN SERVER CONFIGURATION ---------------
-app.set('env', 'development');
 
+// No need to set. By default environment will be set to development
+// app.set('env', 'development');
+
+// configuration for all environments
 app.configure( function () {
     app.set('port', process.env.PORT || 3000);
     app.set('views', path.join(__dirname, 'views'));
@@ -33,22 +36,24 @@ app.configure( function () {
     app.use(express.favicon());
     app.use(express.logger('dev'));
     app.use( express.bodyParser() );
-    app.use( express.methodOverride() );
     app.use(express.cookieParser('!SEEkret007#'));
+
     app.use(express.session({
-    cookie: { maxAge: 60 * 60 * 1000},
-    store: new MongoStore({
-      db: 'mdh-chat-session',
-      host: '192.168.0.252'
-    }, function() {
-      console.log('Called session store!');
-    })
-  }));
+      cookie: { maxAge: 60 * 60 * 1000},
+      store: new MongoStore({
+        db: 'mdh-chat-admin',
+        host: '192.168.0.252'
+        }, function() {
+          console.log('Called session store!');
+        })
+      })
+    );
 
     app.use( express.static( __dirname + '/public' ) );
     app.use( app.router );
 });
 
+// development environment only
 app.configure( 'development', function () {
   // app.use( express.logger() );
   app.use( express.errorHandler({
@@ -57,6 +62,7 @@ app.configure( 'development', function () {
   }) );
 });
 
+// production environment only
 app.configure( 'production', function () {
   app.use( express.errorHandler() );
 });
@@ -66,7 +72,7 @@ routes.configRoutes( app, server );
 
 // ----------------- BEGIN START SERVER -------------------
 server.listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
+    console.log('mdhChat server running in ' + app.get('env') + ' mode: Listening on port ' + app.get('port') );
 });
 
 // ------------------ END START SERVER --------------------

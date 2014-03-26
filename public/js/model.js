@@ -33,7 +33,7 @@ mdhChat.model = (function () {
 
   // The people object API
   // ---------------------
-  // The people object is available at spa.model.people.
+  // The people object is available at mdhChat.model.people.
   // The people object provides methods and events to manage
   // a collection of person objects. Its public methods include:
   //   * get_user() - return the current user person object.
@@ -59,7 +59,7 @@ mdhChat.model = (function () {
   //     completes. The updated user object is provided as data.
   //   * chat-sign-up - This is published when a user sign-up process
   //     completes. The updated user object is provided as data.
-  //   * spa-sign-out - This is published when a sign-out completes.
+  //   * chat-sign-out - This is published when a sign-out completes.
   //     The former user object is provided as data.
   //
   // Each person is represented by a person object.
@@ -380,7 +380,7 @@ mdhChat.model = (function () {
 
     send_msg = function ( msg_text ) {
       var msg_map,
-        sio = isFakeData ? spa.fake.mockSio : mdhChat.data.getSio();
+        sio = isFakeData ? mdhChat.fake.mockSio : mdhChat.data.getSio();
 
       if ( ! sio ) { return false; }
       if ( ! ( stateMap.user && chatee ) ) { return false; }

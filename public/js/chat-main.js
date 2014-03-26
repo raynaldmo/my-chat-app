@@ -202,7 +202,9 @@ mdhChat.chat = (function () {
     people_db = configMap.people_model.get_db();
     chatee    = configMap.chat_model.get_chatee();
 
-    list_html = '<ul data-role="listview" data-theme="c" data-inset="true">';
+    list_html =
+      '<ul data-role="listview" ' +
+      'data-theme="c" data-inset="true" data-filter="true">';
 
     people_db().each( function ( person, idx ) {
       var select_class = '';

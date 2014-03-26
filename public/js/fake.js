@@ -9,7 +9,7 @@
   regexp : true, sloppy  : true, vars     : false,
   white  : true
 */
-/*global $, spa */
+/*global $, mdhChat */
 
 mdhChat.fake = (function () {
   'use strict';
@@ -23,25 +23,21 @@ mdhChat.fake = (function () {
   };
 
   peopleList = [
-    { name : 'Betty', _id : 'id_01',
-      css_map : { top: 20, left: 20,
-        'background-color' : 'rgb( 128, 128, 128)'
-      }
+    { name : 'Fred', _id : 'id_01',
+      email: 'fred@test.com',
+      passwd: 'fred'
     },
-    { name : 'Mike', _id : 'id_02',
-      css_map : { top: 60, left: 20,
-        'background-color' : 'rgb( 128, 255, 128)'
-      }
+    { name : 'Wilma', _id : 'id_02',
+      email: 'wilma@test.com',
+      passwd: 'wilma'
     },
-    { name : 'Pebbles', _id : 'id_03',
-      css_map : { top: 100, left: 20,
-        'background-color' : 'rgb( 128, 192, 192)'
-      }
+    { name : 'Barney', _id : 'id_03',
+      email: 'barney@test.com',
+      passwd: 'barney'
     },
-    { name : 'Wilma', _id : 'id_04',
-      css_map : { top: 140, left: 20,
-        'background-color' : 'rgb( 192, 128, 128)'
-      }
+    { name : 'Betty', _id : 'id_04',
+      email: 'betty@test.com',
+      passwd: 'betty'
     }
   ];
 
@@ -52,23 +48,42 @@ mdhChat.fake = (function () {
       callback_map = {};
 
     on_sio = function ( msg_type, callback ) {
-      callback_map[ msg_type ] = callback;
+      // get rid of '-' in message name so I can
+      // easily use as callback_map property
+      msg_type = msg_type.replace(/-/g, '');
+
+      callback_map[ msg_type] = callback;
     };
 
     emit_sio = function ( msg_type, data ) {
       var person_map, i;
+      console.log(moduleName, 'emit_sio -> ', msg_type);
 
-      // Respond to 'adduser' event with 'userupdate'
+      // Respond to 'sign-up-user' event with 'sign-up-success'
       // callback after a 3s delay.
-      if ( msg_type === 'adduser' && callback_map.userupdate ) {
+      if ( msg_type === 'sign-up-user' && callback_map.signupsuccess ) {
         setTimeout( function () {
           person_map = {
-            _id     : makeFakeId(),
+            cid     : data.cid,
             name    : data.name,
-            css_map : data.css_map
+            email   : data.email,
+            passwd : data.passwd
+          };
+          callback_map.signupsuccess([ person_map ]);
+        }, 3000 );
+      }
+
+      // Respond to 'sign-in-user' event with 'sign-in-success'
+      // callback after a 3s delay.
+      if ( msg_type === 'sign-in-user' && callback_map.signinsuccess ) {
+        setTimeout( function () {
+          person_map = {
+            cid     : data.cid,
+            name    : data.name,
+            passwd : data.passwd
           };
           peopleList.push( person_map );
-          callback_map.userupdate([ person_map ]);
+          callback_map.signinsuccess([ person_map ]);
         }, 3000 );
       }
 
@@ -76,7 +91,7 @@ mdhChat.fake = (function () {
       // callback after a 2s delay. Echo back user info.
       if ( msg_type === 'updatechat' && callback_map.updatechat ) {
         setTimeout( function () {
-          var user = spa.model.people.get_user();
+          var user = mdhChat.model.people.get_user();
           callback_map.updatechat([{
             dest_id   : user.id,
             dest_name : user.name,
@@ -98,29 +113,17 @@ mdhChat.fake = (function () {
         send_listchange();
       }
 
-      // simulate send of 'updateavatar' message and data to server
-      if ( msg_type === 'updateavatar' && callback_map.listchange ) {
-        // simulate receipt of 'listchange' message
-        for ( i = 0; i < peopleList.length; i++ ) {
-          if ( peopleList[ i ]._id === data.person_id ) {
-            peopleList[ i ].css_map = data.css_map;
-            break;
-          }
-        }
-        // execute callback for the 'listchange' message
-        callback_map.listchange([ peopleList ]);
-      }
     };
 
     emit_mock_msg = function () {
       setTimeout( function () {
-        var user = spa.model.people.get_user();
+        var user = mdhChat.model.people.get_user();
         if ( callback_map.updatechat ) {
           callback_map.updatechat([{
             dest_id   : user.id,
             dest_name : user.name,
-            sender_id : 'id_04',
-            msg_text  : 'Hi there ' + user.name + '!  Wilma here.'
+            sender_id : 'id_05',
+            msg_text  : 'Hi there ' + user.name + '!  Fred here.'
           }]);
         }
         else { emit_mock_msg(); }
@@ -129,6 +132,9 @@ mdhChat.fake = (function () {
 
     // Try once per second to use listchange callback.
     // Stop trying after first success.
+    // listchange callback is triggered like so:
+
+    // model:signInSuccess -> chat.join() -> sio.on( 'listchange',...)
     send_listchange = function () {
       listchange_idto = setTimeout( function () {
         if ( callback_map.listchange ) {

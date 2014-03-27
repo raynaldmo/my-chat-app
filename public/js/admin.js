@@ -80,7 +80,7 @@ $(function() {
         var $td, $tr;
         console.log("All Users -> ", data);
 
-        if(data.length > 0) {
+        if (data.length > 0) {
           if (data.status && data.msg) {
             $msg.html(data.msg).css({color: 'orangered'});
           } else {
@@ -89,11 +89,15 @@ $(function() {
             // 2. fill row with data
             var
               i, user_cnt = data.length,
-              arr = ['name', 'email', '_id', 'is_online', 'signed_up', 'last_sign_in'];
+              // object keys to expect
+              arr = [
+                'name', 'email', '_id', 'is_online',
+                'signed_up', 'last_sign_in'
+              ];
 
             for (i = 0; i < user_cnt; i++) { // each user
               $tr = $('<tr></tr>');
-              for(var j = 0; j < arr.length; j++) { // get all data from server
+              for (var j = 0; j < arr.length; j++) { // get all data from server
                 $td = $('<td></td>');
                 $td.text(data[i][arr[j]]);
                 $tr.append($td);

@@ -1,16 +1,31 @@
-{ "name"    : "myChat",
-  "version" : "0.0.1",
-  "private" : true,
+{
+  "name": "myChat",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
     "start": "node app"
   },
-  "dependencies" : {
-    "express"   : "3.2.x",
-    "jade"      : "*",
-    "connect"   : "2.7.x",
-    "mongodb"   : "1.3.x",
-    "socket.io" : "0.9.x",
-    "JSV"       : "4.0.x",
-    "bcrypt"    : "0.7.7"
+  "dependencies": {
+    "express": "3.2.x",
+    "jade": "*",
+    "connect": "2.7.x",
+    "mongodb": "1.3.x",
+    "socket.io": "0.9.x",
+    "JSV": "4.0.x",
+    "bcrypt": "0.7.7"
+  },
+  "description": "Basic chat application built with jQuery Mobile. This is a demo project based on source code found in the book \"Single Page Web Application: JavaScript end-to-end\" By: Michael S. Mikowski and Josh C. Powell Publisher: Manning Publications",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raynaldmo/my-chat-app.git"
+  },
+  "author": "Raynald Mompoint",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/raynaldmo/my-chat-app/issues"
+  },
+  "engines" : {
+    "node" : "0.10.x"
   }
 }

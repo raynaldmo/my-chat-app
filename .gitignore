@@ -5,3 +5,4 @@ public/js/spa.js
 public/js/spa.model.js
 public/js/spa.shell.js
 public/spa.html
+node_modules

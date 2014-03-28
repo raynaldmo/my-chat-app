@@ -18,15 +18,17 @@ var
   routes  = require( './lib/routes' ),
   path    = require( 'path'         ),
   MongoStore = require('connect-mongo')(express),
-
+  config     = require('./lib/config'), cfg,
   app     = express(),
   server  = http.createServer( app );
 // ------------- END MODULE SCOPE VARIABLES ---------------
 
 // ------------- BEGIN SERVER CONFIGURATION ---------------
 
-// No need to set. By default environment will be set to development
+// No need to set env. By default environment will be set to development
 // app.set('env', 'development');
+
+cfg = config[app.get('env')];
 
 // configuration for all environments
 app.configure( function () {
@@ -41,10 +43,9 @@ app.configure( function () {
     app.use(express.session({
       cookie: { maxAge: 60 * 60 * 1000},
       store: new MongoStore({
-        db: 'mdh-chat-admin',
-        host: '192.168.0.252'
+        url : cfg.mongoDbUri
         }, function() {
-          console.log('Called session store!');
+          console.log('*** Called MongoDB session store in', cfg.mode, 'mode ***');
         })
       })
     );
@@ -71,7 +72,8 @@ routes.configRoutes( app, server );
 
 // ----------------- BEGIN START SERVER -------------------
 server.listen(app.get('port'), function() {
-    console.log('mdhChat server running in ' + app.get('env') + ' mode: Listening on port ' + app.get('port') );
+    console.log('*** mdhChat server running in', app.get('env'),
+      'mode (port', app.get('port') + ') ***');
 });
 
 // ------------------ END START SERVER --------------------

@@ -383,6 +383,8 @@ mdhChat.shell = (function () {
   // Throws     : none
   //
   initModule = function ( $container ) {
+    var device;
+
     console.log(moduleName + 'initModule');
 
     // container may be an empty object!!
@@ -390,11 +392,15 @@ mdhChat.shell = (function () {
 
     setJqueryMap();
 
+    // Detect if mobile device. May not be the best way to do this
+    device = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+
     // configure and initialize feature modules
     // we only have one feature, chat!
     mdhChat.chat.configModule({
       chat_model      : mdhChat.model.chat,
-      people_model    : mdhChat.model.people
+      people_model    : mdhChat.model.people,
+      mobile_device : device.test(navigator.userAgent)
     });
 
     mdhChat.chat.initModule( {} );

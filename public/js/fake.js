@@ -43,7 +43,7 @@ mdhChat.fake = (function () {
 
   mockSio = (function () {
     var
-      on_sio, emit_sio, emit_mock_msg,
+      on_sio, emit_sio, off_sio, remove_sio, emit_mock_msg,
       send_listchange, listchange_idto,
       callback_map = {};
 
@@ -146,10 +146,13 @@ mdhChat.fake = (function () {
       }, 1000 );
     };
 
+    off_sio = function() {};
+    remove_sio = function() {};
+
     // We have to start the process ...
     send_listchange();
 
-    return { emit : emit_sio, on : on_sio };
+    return { emit : emit_sio, on : on_sio, off: off_sio, remove: remove_sio };
   }());
 
   return { mockSio : mockSio };

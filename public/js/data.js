@@ -33,6 +33,16 @@ mdhChat.data = (function () {
         socket.on( event_name, function (){
           callback( arguments );
         });
+      },
+      off : function (event_name, callback) {
+        console.log(moduleName + 'socket.off -> ' + event_name);
+        socket.removeListener(event_name, function() {
+          callback(arguments);
+        });
+      },
+      remove : function(event_name) {
+        console.log(moduleName + 'socket.remove -> ' + event_name);
+        socket.removeAllListeners(event_name);
       }
     };
   };

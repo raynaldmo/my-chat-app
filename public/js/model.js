@@ -356,6 +356,7 @@ mdhChat.model = (function () {
 
     join_chat  = function () {
       var sio;
+      console.log(moduleName + 'join_chat');
 
       if ( stateMap.is_connected ) { return false; }
 
@@ -366,7 +367,11 @@ mdhChat.model = (function () {
 
       sio = isFakeData ? mdhChat.fake.mockSio : mdhChat.data.getSio();
 
-      // subscribe to these events from server
+      // unsubscribe so we don't get duplicate messages
+      // sio.off() doesn't seem to work
+      sio.remove('listchange');
+      sio.remove('updatechat');
+
       // listen for changes in online users
       sio.on( 'listchange', _publish_listchange );
 

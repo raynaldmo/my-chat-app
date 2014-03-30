@@ -20,10 +20,12 @@ mdhChat.chat = (function () {
     configMap = {
       settable_map : {
         chat_model      : true,
-        people_model    : true
+        people_model    : true,
+        mobile_device   : true
       },
       chat_model      : null,
-      people_model    : null
+      people_model    : null,
+      mobile_device   : null
     },
 
     stateMap  = {
@@ -38,7 +40,7 @@ mdhChat.chat = (function () {
     onSetchatee,   onUpdatechat, onListchange,
     onSignIn,       onSignOut,
     configModule,  initModule,
-    onLineBtnClick;
+    onLineBtnClick, onEnterMsg;
 
   //----------------- END MODULE SCOPE VARIABLES ---------------
 
@@ -133,6 +135,28 @@ mdhChat.chat = (function () {
 
     return false; // to be safe
   };
+
+  onEnterMsg = function ( event ) {
+    event.preventDefault();
+
+    if (event.which !== 13) return false;
+
+    var msg_text = jqueryMap.$input.val();
+    if ( msg_text.trim() === '' ) { return false; }
+    configMap.chat_model.send_msg( msg_text );
+
+    // jqueryMap.$input.focus();
+
+    jqueryMap.$send.addClass('chat-msg-send-btn-highlight');
+    setTimeout(
+      function ()
+      { jqueryMap.$send.removeClass('chat-msg-send-btn-highlight'); },
+      500
+    );
+
+    return false;
+  };
+
 
   onTapList = function ( event ) {
     var $tapped  = $( event.target ), chatee_id;
@@ -335,7 +359,8 @@ mdhChat.chat = (function () {
   // Throws     : none
   //
   initModule = function ( $container ) {
-    console.log(moduleName + 'initModule');
+    console.log(moduleName + 'initModule -> mobile device',
+      configMap.mobile_device);
 
     stateMap.$container = $container;
     setJqueryMap();
@@ -352,22 +377,13 @@ mdhChat.chat = (function () {
     // bind user input events
     jqueryMap.$users.bind('tap click', onTapList   );
     jqueryMap.$send.bind('tap click', onSubmitMsg );
-    // jqueryMap.$form.bind(   'submit', onSubmitMsg );
+
+    // on desktop machine allow user to hit enter key to send message
+    if (!configMap.mobile_device) {
+      jqueryMap.$input.keyup(onEnterMsg);
+    }
+
     jqueryMap.$online_btn.bind('tap click', onLineBtnClick);
-
-    /*
-    jqueryMap.$msg_log.bind('tap', function() {
-      var $footer = $('#footer');
-      var visibility = $footer.css('visibility');
-      if (visibility == 'hidden') {
-        $footer.css('visibility', 'visible');
-      } else {
-        $footer.css('visibility', 'hidden');
-      }
-    });
-    */
-
-
 
   };
   // End public method /initModule/

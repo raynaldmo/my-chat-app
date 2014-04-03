@@ -252,7 +252,7 @@ mdhChat.chat = (function () {
     if ( users == 0 ) {
       list_html
         += '<li class="chat-list-note">'
-        + "Aw man, No one's online!"
+        + "What, no one's online?"
         + '</li></ul>';
       // clearChat();
     }

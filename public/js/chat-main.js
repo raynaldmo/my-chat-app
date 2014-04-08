@@ -29,7 +29,9 @@ mdhChat.chat = (function () {
     },
 
     stateMap  = {
-      $container   : null
+      $container   : null,
+      msg_alert_ts : null,
+      timer_id     : null
     },
 
     jqueryMap = {},
@@ -40,7 +42,8 @@ mdhChat.chat = (function () {
     onSetchatee,   onUpdatechat, onListchange,
     onSignIn,       onSignOut,
     configModule,  initModule,
-    onLineBtnClick, onEnterMsg;
+    onLineBtnClick, onEnterMsg,
+    messageAlert;
 
   //----------------- END MODULE SCOPE VARIABLES ---------------
 
@@ -51,7 +54,7 @@ mdhChat.chat = (function () {
   // Begin DOM method /setJqueryMap/
   setJqueryMap = function () {
     var
-      $chat_page, $msg_log, $chat_input, $panel, $settings_page;
+      $chat_page, $msg_log, $chat_input, $panel, $settings_page, $msg_alert;
 
     $chat_page = $('#chat-page');
     $msg_log = $('.chat-main-msg-log');
@@ -59,6 +62,7 @@ mdhChat.chat = (function () {
     $panel = $('#chat-user-panel');
 
     $settings_page = $('#settings-page');
+    $msg_alert = $('#chat-msg-alert');
 
     jqueryMap = {
       $chat_page   : $chat_page,
@@ -73,7 +77,8 @@ mdhChat.chat = (function () {
       $users    : $panel.find('.chat-users'),
       $online_btn : $chat_page.find('#online-btn'),
 
-      $settings_page : $settings_page
+      $settings_page : $settings_page,
+      $msg_alert : $msg_alert
     };
   };
   // End DOM method /setJqueryMap/
@@ -113,6 +118,33 @@ mdhChat.chat = (function () {
 
   clearChat = function () { jqueryMap.$msg_log.empty(); };
   // End private DOM methods to manage chat message
+
+  // Manage message notification
+  messageAlert = function() {
+    var ts = Date.now();
+    // var new_alerts_delay = 0;
+    var new_alerts_delay = 1000 * 60 * 5;
+
+    if (!stateMap.msg_alert_ts) {
+      stateMap.msg_alert_ts = ts;
+      jqueryMap.$msg_alert[0].play();
+      stateMap.timer_id = setTimeout(do_msg_alert, 1000 * 45);
+      return;
+    }
+
+    if ((ts - stateMap.msg_alert_ts) >= new_alerts_delay) {
+      stateMap.msg_alert_ts = ts;
+      jqueryMap.$msg_alert[0].play();
+      stateMap.timer_id = setTimeout(do_msg_alert, 1000 * 45);
+    }
+
+    function do_msg_alert() {
+      jqueryMap.$msg_alert[0].play();
+       clearTimeout(stateMap.timer_id)
+    }
+
+  };
+
   //---------------------- END DOM METHODS ---------------------
 
   //------------------- BEGIN EVENT HANDLERS -------------------
@@ -121,6 +153,8 @@ mdhChat.chat = (function () {
     var msg_text = jqueryMap.$input.val();
     if ( msg_text.trim() === '' ) { return false; }
     configMap.chat_model.send_msg( msg_text );
+
+    clearTimeout(stateMap.timer_id);
 
     // jqueryMap.$input.focus();
 
@@ -139,11 +173,14 @@ mdhChat.chat = (function () {
   onEnterMsg = function ( event ) {
     event.preventDefault();
 
+    // 13 == Enter key
     if (event.which !== 13) return false;
 
     var msg_text = jqueryMap.$input.val();
     if ( msg_text.trim() === '' ) { return false; }
     configMap.chat_model.send_msg( msg_text );
+
+    clearTimeout(stateMap.timer_id);
 
     // jqueryMap.$input.focus();
 
@@ -281,6 +318,10 @@ mdhChat.chat = (function () {
 
     if ( ! ( is_user || sender_id === chatee.id ) ) {
       configMap.chat_model.set_chatee( sender_id );
+    }
+
+    if (! is_user) {
+      messageAlert();
     }
 
     writeChat( sender.name, msg_text, is_user );

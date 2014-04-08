@@ -94,7 +94,8 @@ mdhChat.shell = (function () {
       $sign_up_page = $('#sign-up'),
       $sign_in_page = $('#sign-in'),
       $sign_out_page =  $('#sign-out'),
-      $chat_page = $('#chat-page');
+      $chat_page = $('#chat-page'),
+      $msg_alert = $('#chat-msg-alert');
 
     jqueryMap = {
       $container : $container,
@@ -107,7 +108,8 @@ mdhChat.shell = (function () {
       $sign_in_form_reset : $sign_in_page.find('input[type="reset"]'),
       $sign_out_page : $sign_out_page,
       $sign_out_button : $sign_out_page.find('button'),
-      $chat_page : $chat_page
+      $chat_page : $chat_page,
+      $msg_alert : $msg_alert
     };
   };
   // End DOM method /setJqueryMap/
@@ -290,6 +292,10 @@ mdhChat.shell = (function () {
     // we can do this at the beginning of the event handler
     event.preventDefault();
 
+    if (jqueryMap.$msg_alert) {
+      console.log(moduleName + 'onFormSubmit -> load audio file');
+      jqueryMap.$msg_alert.get(0).load();
+    }
     $form = this.id === 'sign-in-form' ? jqueryMap.$sign_in_form :
       jqueryMap.$sign_up_form;
 

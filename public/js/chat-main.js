@@ -125,6 +125,7 @@ mdhChat.chat = (function () {
     // var new_alerts_delay = 0;
     var new_alerts_delay = 1000 * 60 * 5;
 
+    // At first, we get an new message alert right away.
     if (!stateMap.msg_alert_ts) {
       stateMap.msg_alert_ts = ts;
       jqueryMap.$msg_alert[0].play();
@@ -132,6 +133,8 @@ mdhChat.chat = (function () {
       return;
     }
 
+    // Once we get an alert (and possibly another if chatee didn't respond
+    // We "mute" further alerts for 5 minutes
     if ((ts - stateMap.msg_alert_ts) >= new_alerts_delay) {
       stateMap.msg_alert_ts = ts;
       jqueryMap.$msg_alert[0].play();

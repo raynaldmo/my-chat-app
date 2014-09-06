@@ -37,7 +37,7 @@ app.configure( function () {
     app.set('view engine', 'jade');
     app.use(express.favicon());
     app.use(express.logger('dev'));
-    app.use( express.bodyParser() );
+    app.use( express.bodyParser() ); // used for POST data (available in req.body)
     app.use(express.cookieParser('!SEEkret007#'));
 
     app.use(express.session({

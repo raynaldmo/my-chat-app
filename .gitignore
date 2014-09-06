@@ -6,3 +6,7 @@ public/js/spa.model.js
 public/js/spa.shell.js
 public/spa.html
 node_modules
+cookiejar.txt
+lib/api.js
+lib/routes-orig.js
+public/images/

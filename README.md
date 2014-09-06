@@ -15,9 +15,9 @@ Single global: mdhChat
 
 3. MVC architecture based on book [Single Page Web Applications]
 * Models (model.js)  
-Implements people object to manage users (sign-in/sign-up/active).  
-Implements chat object to send/receive chat messages  
-For data binding, emits events to Controller using [jquery.event.gevent] jquery plugin  
+Implements people object to manage user sign-in/sign-up/active.  
+Implements chat object for handling user chat messages  
+Data binding - emits events to Controller using [jquery.event.gevent] jquery plugin  
 
 * Templates  
 Statically defined. No library used.  
@@ -37,7 +37,7 @@ Socket.io is used for chat and user signup/sign-in messages to server
 
 
 5. Admin interface  [my-chat2-admin]  
-* Uses REST API for administration tasks  
+* Uses REST API/AJAX for administration tasks  
 Login/Logout, show users (active orlogged out), delete users  (admin.js)
 
 
@@ -54,7 +54,8 @@ Login/Logout, show users (active orlogged out), delete users  (admin.js)
 [mongolab]
 
 ###Todo
-Use PhoneGap to convert to native app
+Use PhoneGap to convert to native app  
+Use Mongoose instead of custom driver
 
  [jquery.event.gevent]:https://github.com/mmikowski/jquery.event.gevent/blob/master/jquery.event.gevent.js
 

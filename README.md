@@ -5,7 +5,7 @@
 
 ##Design Architecture
 
-See what the app looks like [my-chat2]
+See what the app looks like [mychat2]
 
 ###Front End
 1. UI - jQuery Mobile 1.3.2
@@ -36,10 +36,11 @@ handles routing/hashchange events, view management
 Socket.io is used for chat and user signup/sign-in messages to server
 
 
-5. Admin interface  [my-chat2-admin]  
+5. Admin interface  [mychat2-admin]
 * Uses REST API/AJAX for administration tasks  
-Login/Logout, show users (active orlogged out), delete users  (admin.js)
+Login/Logout, show users (active or logged out), delete users  (admin.js)
 
+Admin user login credentials are: test/test
 
 
 ###Back End
@@ -57,13 +58,13 @@ Login/Logout, show users (active orlogged out), delete users  (admin.js)
 Use PhoneGap to convert to native app  
 Use Mongoose instead of custom driver
 
- [jquery.event.gevent]:https://github.com/mmikowski/jquery.event.gevent/blob/master/jquery.event.gevent.js
+ [jquery.event.gevent]:https://github.com/mmikowski/jquery.event.gevent
 
 [Single Page Web Applications]:http://www.amazon.com/Single-Page-Applications-end---end/dp/1617290750/ref=sr_1_1?s=books&ie=UTF8&qid=1405382977&sr=1-1&keywords=single+page+web+applications
 
-[my-chat2]:http://my-chat2.herokuapp.com/
+[mychat2]:http://mychat2.herokuapp.com/
 
-[my-chat2-admin]:http://mychat2.herokuapp.com/login
+[mychat2-admin]:http://mychat2.herokuapp.com/login
 
 [Heroku]:https://www.heroku.com/
 
